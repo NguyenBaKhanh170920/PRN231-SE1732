@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\pe2.props" />
+</Project>
