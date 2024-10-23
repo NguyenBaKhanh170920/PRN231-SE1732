@@ -1,0 +1,38 @@
+﻿@page
+@using Q2.DTO
+@model Q2.Pages.Home.EmployeeWithSkillModel
+@{
+}
+<table border="1">
+    <thead>
+        <th></th>
+        @foreach(SkillDTO s in Model.sList)
+        {
+            <th>@s.SkillName</th>
+        }
+    </thead>
+    <tbody>
+        @foreach(EmployeeDTO e in Model.eList)
+        {
+            <tr>
+                <td>@e.Name</td>
+                @foreach (SkillDTO s in Model.sList)
+                {
+                    var lst = Model.esList.FirstOrDefault(x => x.EmployeeId == e.EmployeeId && x.SkillId == s.SkillId);
+                    if (lst != null)
+                    {
+                        <td>
+                            ProficiencyLevel: @(lst.ProficiencyLevel!=null? lst.ProficiencyLevel : "No info") <br />
+                            Date: @(lst.AcquiredDate.HasValue ? lst.AcquiredDate.Value.ToShortDateString() : "No info")
+                        </td>
+                        
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>
