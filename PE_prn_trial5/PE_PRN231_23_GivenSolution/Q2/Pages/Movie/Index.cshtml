@@ -1,0 +1,39 @@
+﻿@page
+@using Q2.DTO
+@model Q2.Pages.Movie.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    //var rs=ViewData["movie"]as List<MovieDTO>;
+}
+<h1>Authors</h1>
+<h1>Add new Movies</h1>
+<form>
+   MovieId:  <input type="text" />
+   <br />
+   MovieTitle: <input type="text"/>
+   <br />
+   Studio: <select name="studio" id="studio">
+        @foreach(StudioDTO s in Model.stList)
+        {
+            <option value="@s.StudioId">@s.StudioName</option>
+        }
+    </select>
+    <br />
+    <button type="submit">Add new</button>
+</form>
+<h1>List of Movies</h1>
+<table border="1">
+    <thead>
+        <th>Id</th>
+        <th>Title</th>
+    </thead>
+    <tbody>
+        @foreach(MovieDTO m in Model.mvList)
+        {
+            <tr>
+                <td>@m.MovieId</td>
+                <td>@m.Title</td>
+            </tr>
+        }
+    </tbody>
+</table>
