@@ -1,0 +1,102 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+}
+
+<form asp-action="AddEmp" asp-controller="Employee" method="post">
+    <table>
+        <tr>
+            <td>
+                EmployeeId
+            </td>
+            <td>
+                <input type="text" name="employeeId" placeholder="Id" /><br />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                <input type="text" name="name" placeholder="Name" /> <br />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Gender
+            </td>
+            <td>
+                <input type="radio" id="male" name="gender" value="Male" required>
+                 <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female">
+                <label for="female">Female</label> <br />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Dob
+            </td>
+            <td>
+                <input type="date" name="dob" /><br />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Position
+            </td>
+            <td>
+                 <input type="text" name="position" placeholder="Position" /> <br />
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <input type="checkbox" name="isFulltime" value="true"/> Is Full Time
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <input type="submit" value="Add New">
+            </td>
+        </tr>
+    </table>
+</form>
+
+  @if (TempData["success"] != null)
+{
+    <div style="color: forestgreen">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div style="color: red">@TempData["error"]</div>
+}
+
+<table border="1">
+    <thead>
+    <th>EmployeeId</th>
+    <th>EmployeeName</th>
+    <th>Gender</th>
+    <th>Dob</th>
+    <th>Position</th>
+    <th>IsFulltime</th>
+    </thead>
+    <tbody>
+            @foreach (var e in @ViewBag.employees)
+            {
+            <tr>
+                <td>@e.employeeId</td>
+                <td>@e.name</td>
+                <td>@e.gender</td>
+                <td>@e.dob</td>
+                <td>@e.position</td>
+                <td>@e.isFulltime</td>
+            </tr>
+
+            }
+    </tbody>
+</table>
