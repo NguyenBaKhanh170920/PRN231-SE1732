@@ -1,0 +1,19 @@
+﻿@page 
+@model Q2.Pages.Student.Fun1Model
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Q2.DTO
+@{
+    StudentDTO x = ViewData["API"] as StudentDTO;
+}
+<div class="form-group">
+    <label>Staff Id</label>
+    <input type="text" name="id" class="form-control" value="@x.Id" readonly />
+</div>
+<div class="form-group">
+    <label>Name</label>
+    <input type="text" name="name" class="form-control" value="@x.FullName" class="form-control" readonly />
+</div>
+<div class="form-group">
+    <label>Password</label>
+    <input type="text" name="pass" class="form-control" value="@x.Gender" class="form-control" readonly />
+</div>
