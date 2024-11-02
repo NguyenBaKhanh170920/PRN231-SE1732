@@ -1,0 +1,51 @@
+﻿@page
+@using Q2.DTO
+@model Q2.Pages.Movie.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    //var rs=ViewData["movie"]as List<MovieDTO>;
+}
+<h1>Authors</h1>
+@foreach(StudioDTO x in Model.stList)
+{
+    <a asp-page-handler="StudioList" asp-route-sid="@x.StudioId">@x.StudioName</a>
+    <br />
+}
+<h1>Add new Movies</h1>
+<form method="post" asp-page-handler="AddMovie">
+   MovieId:  <input type="text" name="id" />
+   <br />
+    MovieTitle: <input type="text" name="title" />
+   <br />
+   Studio: <select name="studio" id="studio">
+        @foreach(StudioDTO s in Model.stList)
+        {
+            <option value="@s.StudioId">@s.StudioName</option>
+        }
+    </select>
+    <br />
+    RadioButton: <br />
+    <input type="radio" id="age1" name="age" value="30">
+    <label for="age1">0 - 30</label><br>
+    <input type="radio" id="age2" name="age" value="60">
+    <label for="age2">31 - 60</label><br>
+    <input type="radio" id="age3" name="age" value="100">
+    <label for="age3">61 - 100</label><br><br>
+    <button type="submit">Add new</button>
+</form>
+<h1>List of Movies</h1>
+<table border="1">
+    <thead>
+        <th>Id</th>
+        <th>Title</th>
+    </thead>
+    <tbody>
+        @foreach(MovieDTO m in Model.mvList)
+        {
+            <tr>
+                <td>@m.MovieId</td>
+                <td>@m.Title</td>
+            </tr>
+        }
+    </tbody>
+</table>
