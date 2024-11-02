@@ -1,0 +1,147 @@
+------------------------Cors/ cho vao neu q2 goi api q1
+builder.Services.AddCors();
+
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+});
+---------------------------------------
+dotnet tool install --global dotnet-ef
+--force  ;TrustServerCertificate=True;Trusted_Connection=True;
+
+dotnet ef dbcontext scaffold "server =(local); database = DUONGPV14_PRN;uid=sa;pwd=123456;Trusted_Connection=True;Encrypt=False" Microsoft.EntityFrameworkCore.SqlServer -o Models
+
+dotnet ef dbcontext scaffold "USER ID=c##EXAM3_12;Password=123456;DATA SOURCE=localhost:1521/ORCLCDB;" Oracle.EntityFrameWorkCore -o Models 
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "server =(local); database = DUONGPV14_PRN;uid=sa;pwd=123456;"
+  }
+}
+------------------------------
+fromquery id
+------------------
+var ConnectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetConnectionString("DefaultConnection");
+optionsBuilder.UseSqlServer(ConnectionString);
+-------------------------------------
+builder.Services.AddDbContext<PE_PRN231_Trial_02Context>
+    (x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+--------------------------------------
+ use master
+ alter database PetitPieceWebsite set single_user with rollback immediate
+
+ drop database PetitPieceWebsite
+---------------------------------------Odata
+	config odata
+B1: trong program
+ODataConventionModelBuilder mdBuilder = new ODataConventionModelBuilder();
+mdBuilder.EntitySet<EmployeeDTO>("Employee");
+builder.Services.AddControllers().AddOData(opt => opt.Select().Filter().Count().OrderBy().AddRouteComponents("odata", mdBuilder.GetEdmModel()));
+B2: trong controller
++ thêm thuộc tính EnableQuery
++ đặt tên hàm là Get()
+B3: trong modelDTO
+thêm thuộc tính [Key] vào property id
+Lưu ý chỉ có 1 hàm đặt tên là Get
+-------------------------------------razor page
+Razor pages:
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
+var app = builder.Build();
+app.MapRazorPages();
+app.Run();
+--------------------------------------Call api http
+HttpClient _httpClient = new HttpClient();
+HttpResponseMessage response = _httpClient.GetAsync("http://localhost:5100/api/Employee/List").Result;
+var employees = response.Content.ReadFromJsonAsync<List<EmployeeDTO>>().Result;
+rs1 = new List<EmployeeDTO>();
+rs1 = employees.ToList();
+ViewData["API"] = employees.ToList();
+--------------------------------------
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+-------------------------------------Program cau 1
+using Microsoft.EntityFrameworkCore;
+using Q1.Models;
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors();//Neu muon goi api cau 2
+builder.Services.AddDbContext<PE_PRN231_Trial_02Context>
+    (x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSwaggerGen();
+var app = builder.Build();
+app.UseCors(builder => //new muon goi api o cau 2
+{
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+});
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
+----------------------------------------------- form
+<form method="post" asp-page-handler="AddMovie">
+   MovieId:  <input type="text" name="id" />
+   <br />
+    MovieTitle: <input type="text" name="title" />
+   <br />
+   Studio: <select name="studio" id="studio">
+        @foreach(StudioDTO s in Model.stList)
+        {
+            <option value="@s.StudioId">@s.StudioName</option>
+        }
+    </select>
+    <br />
+    RadioButton: <br />
+    <input type="radio" id="age1" name="age" value="30">
+    <label for="age1">0 - 30</label><br>
+    <input type="radio" id="age2" name="age" value="60">
+    <label for="age2">31 - 60</label><br>
+    <input type="radio" id="age3" name="age" value="100">
+    <label for="age3">61 - 100</label><br><br>
+    <button type="submit">Add new</button>
+</form>
+----------------------------------------------- Table
+<h1>List of Movies</h1>
+<table border="1">
+    <thead>
+        <th>Id</th>
+        <th>Title</th>
+    </thead>
+    <tbody>
+        @foreach(MovieDTO m in Model.mvList)
+        {
+            <tr>
+                <td>@m.MovieId</td>
+                <td>@m.Title</td>
+            </tr>
+        }
+    </tbody>
+</table>
+-----------------------------------------------
+<a asp-page-handler="Detail" asp-route-did="@m.Id">Detail</a>
+---------------------------------------------- Detail
+<div class="form-group">
+    <label>Staff Id</label>
+    <input type="text" name="id" class="form-control" value="@x.Id" readonly />
+</div>
+<div class="form-group">
+    <label>Name</label>
+    <input type="text" name="name" class="form-control" value="@x.FullName" class="form-control" readonly />
+</div>
+<div class="form-group">
+    <label>Password</label>
+    <input type="text" name="pass" class="form-control" value="@x.Gender" class="form-control" readonly />
+</div>
+----------------------------------------------- form delete
+                <td>
+                    <form method="post" asp-page-handler="Delete" asp-route-did="@x.Id" style="display:inline;">
+                        <button type="submit" class="btn btn-link" style="padding: 0; border: none; background: none; color: blue; cursor: pointer;">Delete</button>
+                    </form>
+                </td>
+
